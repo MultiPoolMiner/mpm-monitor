@@ -1,0 +1,21 @@
+table {
+  border-collapse: collapse;
+}
+
+table.workers td,table.workers th {
+  border: 1px solid black;
+}
+
+table.miners td, table.miners th {
+  border: 0;
+}
+
+td.unknown {
+  background-color: #AA6D39;
+}
+td.stopped {
+  background-color: #AA3C39;
+}
+td.running {
+  background-color: #2D8632;
+}
