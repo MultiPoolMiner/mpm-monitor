@@ -18,7 +18,7 @@ include('../functions.php');
 $workers = get_workers($_GET['address']);
 if(empty($workers)) { echo "Nothing found."; exit;}
 
-echo "<table class='workers'><tr><th>Worker Name</th><th>Status</th><th>Last Seen</th><th>Estimated BTC/Day</th><th>Active Miners</th></tr>";
+echo "<table class='workers'><tr><th>Worker Name</th><th>Status</th><th>Last Seen</th><th>BTC/Day</th><th>Active Miners</th></tr>";
 
 foreach($workers as $worker) {
   $workerstatus = json_decode($worker['miners']);
@@ -39,17 +39,18 @@ foreach($workers as $worker) {
   echo "<td>";
 
   if(count($workerstatus) > 0) {
-    echo "<table class='miners'><tr><th>Name</th><th>Type</th><th>Pool</th><th>Path</th><th>Active</th><th>Current Speed</th><th>Estimated Speed</th><th>PID</th><th>BTC/day</th></tr>";
+    echo "<table class='miners'><tr><th>Name</th><th>Type</th><th>Pool</th><th>Path</th><th>Active</th><th>Algorithm</th><th>Current Speed</th><th>Estimated Speed</th><th>PID</th><th>BTC/day</th></tr>";
 
     foreach($workerstatus as $m) {
       echo "<tr>";
       echo "<td>{$m->Name}</td>";
-      echo "<td>{$m->Type}</td>";
-      echo "<td>{$m->Pool}</td>";
+      echo "<td>" . implode(",",$m->Type) . "</td>";
+      echo "<td>" . implode(",",$m->Pool) . "</td>";
       echo "<td>{$m->Path}</td>";
       echo "<td>{$m->Active}</td>";
-      echo "<td>{$m->CurrentSpeed}</td>";
-      echo "<td>{$m->EstimatedSpeed}</td>";
+      echo "<td>" . implode(",",$m->Algorithm) . "</td>";
+      echo "<td>" . implode(",",$m->CurrentSpeed) . "</td>";
+      echo "<td>" . implode(",",$m->EstimatedSpeed) . "</td>";
       echo "<td>{$m->PID}</td>";
       echo "<td>{$m->{'BTC/day'}}</td>";
       echo "</tr>";

@@ -1,5 +1,6 @@
 table {
   border-collapse: collapse;
+  width: 100%;
 }
 
 table.workers td,table.workers th {
@@ -8,7 +9,10 @@ table.workers td,table.workers th {
 
 table.miners td, table.miners th {
   border: 0;
+  font-size: small;
 }
+
+th { text-align: left; }
 
 td.unknown {
   background-color: #AA6D39;
