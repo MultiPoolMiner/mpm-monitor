@@ -36,7 +36,7 @@ foreach($workers as $worker) {
   }
 
   echo "<td>" . date("Y-m-d H:i:s", $worker['lastseen']) . "</td>";
-  echo "<td>" . number_format($worker['profit']) . "</td>";
+  echo "<td>" . number_format($worker['profit'],8) . "</td>";
   echo "<td>";
 
   if(count($workerstatus) > 0) {
