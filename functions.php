@@ -52,4 +52,16 @@ function update_worker($address, $workername, $miners = "", $profit = 0) {
   $stmt->execute();
 }
 
+function ConvertToHashrate($value) {
+  # If value is not just a number, return it as is
+  if(!is_numeric($value)) { return $value; }
 
+  $units = array('H/s','KH/s','MH/s','GH/s','TH/s','PH/s');
+
+  $pow = floor(($value ? log($value) : 0) / log(1000));
+  $pow = min($pow, count($units) -1);
+
+  $value /= pow(1000, $pow);
+  echo "VALUE = $value\n";
+  return round($value, 2) . ' ' . $units[$pow];
+}
