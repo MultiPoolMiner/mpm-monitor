@@ -1,0 +1,201 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <meta http-equiv="refresh" content="120"/>
+  <script src="https://code.jquery.com/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.1.3/mustache.js"></script>
+
+  <script id="worker_template_basic" type="text/template">
+    <div class="workers basic">
+      {{#.}}
+        <div class="worker workerbasic worker_{{workerstatus}}">
+          <h3>{{workername}}</h3>
+          <div class="statuscontainerbasic">
+            <div class="workerstatus"><span class="label">Status:</span><span>{{workerstatus}}</div>
+            <div class="lastseen"><span class="label">Last Seen:</span><span>{{timesincelastseen}}</div>
+            <div class="btcday"><span class="label">BTC/Day:</span><span>{{profit}}</div>
+          </div>
+        </div>
+      {{/.}}
+    </div>
+  </script>
+            
+
+  <script id="worker_template_detailed" type="text/template">
+    <div class="workers detailed">
+      {{#.}}
+        <div class="worker workerdetailed worker_{{workerstatus}}">
+          <h3>{{workername}}</h3>
+          <div class="statuscontainer">
+            <div class="workerstatus"><span class="label">Status:</span><span>{{workerstatus}}</div>
+            <div class="lastseen"><span class="label">Last Seen:</span><span>{{timesincelastseen}}</div>
+            <div class="btcday"><span class="label">BTC/Day:</span><span>{{profit}}</div>
+          </div>
+          <div class="activeminers">
+            <table>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Pool</th>
+                <th>Path</th>
+                <th>Active</th>
+                <th>Algorithm</th>
+                <th>Current Speed</th>
+                <th>Benchmark Speed</th>
+                <th>PID</th>
+                <th>BTC/day</th>
+              </tr>
+              {{#miners}}
+                <tr>
+                  <td>{{Name}}</td>
+                  <td>{{Type}}</td>
+                  <td>{{Pool}}</td>
+                  <td>{{Path}}</td>
+                  <td>{{Active}}</td>
+                  <td>{{Algorithm}}</td>
+                  <td>{{CurrentSpeed}}</td>
+                  <td>{{EstimatedSpeed}}</td>
+                  <td>{{PID}}</td>
+                  <td>{{BTC/day}}</td>
+                </tr>
+              {{/miners}}
+            </table>
+          </div>
+        </div>
+      {{/.}}
+    </div>
+  </script>
+
+
+  <script type="text/javascript">
+    function getUrlParameter(sParam) {
+      var sPageURL = decodeURIComponent(window.location.search.substring(1)),sURLVariables = sPageURL.split('&'),sParameterName,i;
+  
+      for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam) {
+          return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+      }
+    }
+
+    function timeSince(date) {
+      var seconds = Math.floor((new Date() - date) / 1000);
+      var interval = Math.floor(seconds / 31536000);
+
+      if (interval > 1) {
+        return interval + " years ago";
+      }
+      interval = Math.floor(seconds / 2592000);
+      if (interval > 1) {
+        return interval + " months ago";
+      }
+      interval = Math.floor(seconds / 86400);
+      if (interval > 1) {
+        return interval + " days ago";
+      }
+      interval = Math.floor(seconds / 3600);
+      if (interval > 1) {
+        return interval + " hours ago";
+      }
+      interval = Math.floor(seconds / 60);
+      if (interval > 1) {
+        return interval + " minutes ago";
+      }
+      return Math.floor(seconds) + " seconds ago";
+    }
+
+    function convertHashrate(hashes) {
+      hashes = parseFloat(hashes);
+      if(hashes == 0) return '0 H/s';
+      var sizes = ['H/s','KH/s','MH/s','GH/s','TH/s','PH/s','EH/s','ZH/s'];
+      var i = Math.floor(Math.log(hashes)/Math.log(1000));
+      return parseFloat((hashes/Math.pow(1000,i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function formatWorkers(json) {
+    }
+
+    function updateStatus(address) {
+      $.ajax({url: "stats.php?address=" + address, success: function(result) {
+
+        // Fix and add some extra information to the json
+
+        var now = Math.round((new Date()).getTime() / 1000);
+        for (i in result) {
+          // Set the worker status
+          if(result[i].lastseen > (now - 5*60)) {
+            result[i].workerstatus = "Running";
+          } else {
+            result[i].workerstatus = "Stopped";
+          }
+          // Set worker timesincelastseen
+          result[i].timesincelastseen = timeSince(result[i].lastseen * 1000);
+  
+          // Round profit to 8 decimals
+          result[i].profit = result[i].profit.toFixed(8);
+  
+          for (j in result[i].miners) {
+            // Comma separate the strings
+            result[i].miners[j].Algoritm = result[i].miners[j].Algoritm 
+            // Round profit
+            result[i].miners[j]["BTC/day"] = parseFloat(result[i].miners[j]["BTC/day"]).toFixed(8);
+            // Convert hashrates to readable format, then comma separate
+            for (k in result[i].miners[j].CurrentSpeed) {
+              result[i].miners[j].CurrentSpeed[k] = convertHashrate(result[i].miners[j].CurrentSpeed[k]);
+            }
+            result[i].miners[j].CurrentSpeed = result[i].miners[j].CurrentSpeed.toString()
+            for (k in result[i].miners[j].EstimatedSpeed) {
+              result[i].miners[j].EstimatedSpeed[k] = convertHashrate(result[i].miners[j].EstimatedSpeed[k]);
+            }
+            result[i].miners[j].EstimatedSpeed = result[i].miners[j].EstimatedSpeed.toString()
+          }
+        }
+
+        // Clear #workers_placeholder, format according to the template and append
+        $("#workers_placeholder").empty();
+
+        if(showdetail) {
+          var template = $("#worker_template_detailed").html();
+        } else {
+          var template = $("#worker_template_basic").html();
+        }
+
+        var html = Mustache.render(template, result);
+        $("#workers_placeholder").append(html);
+      }});
+    }
+
+    $(document).ready(function() {
+      var address = getUrlParameter('address');
+
+      var detail = getUrlParameter('showdetail');
+      if(detail == "yes") { 
+        showdetail = true 
+      } else { 
+        showdetail = false 
+      }
+      $("#showdetail").prop('checked', showdetail);
+
+      if(address) {
+        $("#address").val(address);
+        updateStatus(address);
+        window.setInterval(function() {updateStatus(address)}, 60000);
+      }
+    });
+
+  </script>
+
+</head>
+<body>
+
+  <form id="addressform" method="GET">
+    Address: <input id="address" type="text" name="address"/>
+      <label>Show details<input id="showdetail" type="checkbox" name="showdetail" value="yes"/></label>
+    <input type="submit" value="Submit"/>
+  </form>
+
+  <div id="workers_placeholder"></div>
+
+</body>
+</html>
