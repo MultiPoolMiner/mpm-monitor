@@ -119,6 +119,13 @@
     function updateStatus(address) {
       $.ajax({url: "stats.php?address=" + address, success: function(result) {
 
+        // Check if error is set.  If it is, just display the error.
+        if(result.hasOwnProperty('error')) {
+          $("#workers_placeholder").empty();
+          $("#workers_placeholder").append(result.error);
+          return;
+        }
+
         // Fix and add some extra information to the json
 
         var now = Math.round((new Date()).getTime() / 1000);
