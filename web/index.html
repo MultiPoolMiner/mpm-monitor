@@ -130,6 +130,10 @@
 
         var now = Math.round((new Date()).getTime() / 1000);
         for (i in result) {
+          // Some versions of PHP/MySQL/PDO return strings instead of numbers
+          result[i].lastseen = parseInt(result[i].lastseen);
+          result[i].profit = parseFloat(result[i].profit);
+
           // Set the worker status
           if(result[i].lastseen > (now - 5*60)) {
             result[i].workerstatus = "Running";
