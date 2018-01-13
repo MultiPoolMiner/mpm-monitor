@@ -2,8 +2,6 @@
 
 This is designed to run on a webserver somewhere to monitor all your MultiPoolMiner workers.
 
-Currently it only works with my version at https://github.com/grantemsley/MultiPoolMiner
-
 ## Installation
 Install on a webserver with Apache and PHP.  Set the document root to the /web directory
 
@@ -28,6 +26,6 @@ On your workers, set `$MinerStatusURL = "http://your.website.com/miner.php"
 
 ## Where is the information stored?
 
-In an SQLite3 database in the main directory.  The database file gets created automatically.  If you want to clear all data, simply delete miners.sqlite3.
+Data is stored in MySQL.  Edit the web/private/config.php file to match your settings.
 
-I chose to use an SQLite database to simplify installation - no need to setup username/password for a MySQL database or anything.
+Make sure the .htaccess file blocks access to files in web/private.
