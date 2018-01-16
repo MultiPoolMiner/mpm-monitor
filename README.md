@@ -7,7 +7,9 @@ Currently it only works with my version at https://github.com/grantemsley/MultiP
 ## Installation
 Install on a webserver with Apache and PHP.  Set the document root to the /web directory
 
-On your workers, set `$MinerStatusURL = "http://your.website.com/miner.php"
+On your workers, set 
+
+    $MinerStatusURL = "http://your.website.com/miner.php"
 
 ## What information is reported?
 
