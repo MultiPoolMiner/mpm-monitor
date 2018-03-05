@@ -15,6 +15,7 @@
 if(empty($_GET['address'])) { exit; }
 
 include('../functions.php');
+date_default_timezone_set('UTC');
 
 $workers = get_workers($_GET['address']);
 if(empty($workers)) { echo "Nothing found."; exit;}
