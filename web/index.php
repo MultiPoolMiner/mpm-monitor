@@ -45,32 +45,41 @@ foreach($workers as $worker) {
 
     foreach($workerstatus as $m) {
       $currentspeeds = array();
-      foreach($m->CurrentSpeed as $cs) {
+      foreach((array)$m->CurrentSpeed as $cs) {
         $currentspeeds[] = ConvertToHashrate($cs);
       }
 
       $estimatedspeeds = array();
-      foreach($m->EstimatedSpeed as $es) {
+      foreach((array)$m->EstimatedSpeed as $es) {
         $estimatedspeeds[] = ConvertToHashrate($es);
       }
 
+      $mName = (array_key_exists('Name', $m)) ? $m->Name : "";
+      $mType = (array_key_exists('Type', $m)) ? $m->Type : "";
+      $mPool = (array_key_exists('Pool', $m)) ? $m->Pool : "";
+      $mPath = (array_key_exists('Path', $m)) ? $m->Path : "";
+      $mActive = (array_key_exists('Active', $m)) ? $m->Active : "";
+      $mAlgorithm = (array_key_exists('Algorithm', $m)) ? $m->Algorithm : "";
+      $mPID = (array_key_exists('PID', $m)) ? $m->PID : "";
+      $mBTCperday = (array_key_exists('BTC/day', $m)) ? $m->{'BTC/day'} : "";
+
       echo "<tr>";
-      echo "<td>{$m->Name}</td>";
-      echo "<td>" . implode(",",$m->Type) . "</td>";
-      echo "<td>" . implode(",",$m->Pool) . "</td>";
-      echo "<td>{$m->Path}</td>";
-      echo "<td>{$m->Active}</td>";
-      echo "<td>" . implode(",",$m->Algorithm) . "</td>";
+      echo "<td>{$mName}</td>";
+      echo "<td>{$mType}</td>";
+      echo "<td>{$mPool}</td>";
+      echo "<td>{$mPath}</td>";
+      echo "<td>{$mActive}</td>";
+      echo "<td>{$mAlgorithm}</td>";
       echo "<td>" . implode(",",$currentspeeds) . "</td>";
       echo "<td>" . implode(",",$estimatedspeeds) . "</td>";
-      echo "<td>{$m->PID}</td>";
-      echo "<td>{$m->{'BTC/day'}}</td>";
+      echo "<td>{$mPID}</td>";
+      echo "<td>{$mBTCperday}</td>";
       echo "</tr>";
     }
     echo "</table>";
   } else {
     echo "Not reported";
-  }  
+  }
   echo "</td>";
   echo "</tr>";
 }
