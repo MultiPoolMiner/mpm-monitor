@@ -14,8 +14,7 @@ function connect_database() {
       lastseen INTEGER,
       miners TEXT,
       profit REAL,
-      PRIMARY KEY(address,workername)
-    ) WITHOUT ROWID;");
+      PRIMARY KEY(address,workername));");
   return $db;
 }
 
