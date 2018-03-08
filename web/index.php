@@ -1,4 +1,13 @@
-<?php ini_set('display_errors','On');?>
+<?php
+ini_set('display_errors','On');
+
+if (empty($_GET['address'])) {
+  $addr = "";
+} else {
+  $addr = $_GET['address'];
+}
+?>
+
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="style.css"/>
@@ -7,7 +16,7 @@
 
 <body>
 <form method="GET">
-  Address: <input type="text" name="address" value="<?=$_GET['address']?>"/><input type="submit" value="Submit"/>
+  Address: <input type="text" name="address" value="<?=$addr?>"/><input type="submit" value="Submit"/>
 </form>
 
 
