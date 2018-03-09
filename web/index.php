@@ -64,11 +64,11 @@ foreach($workers as $worker) {
       }
 
       $mName = (array_key_exists('Name', $m)) ? $m->Name : "";
-      $mType = (array_key_exists('Type', $m)) ? $m->Type : "";
-      $mPool = (array_key_exists('Pool', $m)) ? $m->Pool : "";
+      $mType = (array_key_exists('Type', $m)) ? implode(",",$m->Type) : "";
+      $mPool = (array_key_exists('Pool', $m)) ? implode(",",$m->Pool) : "";
       $mPath = (array_key_exists('Path', $m)) ? $m->Path : "";
       $mActive = (array_key_exists('Active', $m)) ? $m->Active : "";
-      $mAlgorithm = (array_key_exists('Algorithm', $m)) ? $m->Algorithm : "";
+      $mAlgorithm = (array_key_exists('Algorithm', $m)) ? implode(",",$m->Algorithm) : "";
       $mPID = (array_key_exists('PID', $m)) ? $m->PID : "";
       $mBTCperday = (array_key_exists('BTC/day', $m)) ? $m->{'BTC/day'} : "";
 
