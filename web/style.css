@@ -13,6 +13,17 @@ header {
   text-align: center;
 }
 
+.total_profit {
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+.profittext {
+  font-size: larger;
+  font-weight: 700;
+}
+
 .text-white {
   color: #fff !important;
 }

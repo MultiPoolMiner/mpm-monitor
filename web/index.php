@@ -39,6 +39,11 @@
     </div>
   </script>
 
+  <script id="total_profit_template" type="text/template">
+    Total BTC/Day:<br/>
+    <span class="profittext">{{.}}</span>
+  </script>
+
   <script id="worker_template_basic" type="text/template">
     <div class="workers basic">
       {{#.}}
@@ -181,16 +186,18 @@
         }
 
         // Fix and add some extra information to the json
-
+        var totalprofit = 0.0;
         var now = Math.round((new Date()).getTime() / 1000);
         for (i in result) {
           // Some versions of PHP/MySQL/PDO return strings instead of numbers
           result[i].lastseen = parseInt(result[i].lastseen);
           result[i].profit = parseFloat(result[i].profit);
 
+
           // Set the worker status
           if(result[i].lastseen > (now - 5*60)) {
             result[i].workerstatus = "Running";
+            totalprofit += result[i].profit;
           } else {
             result[i].workerstatus = "Stopped";
           }
@@ -217,6 +224,8 @@
           }
         }
 
+        // Round total profit
+        totalprofit = totalprofit.toFixed(8);
         // Clear #workers_placeholder, format according to the template and append
         $("#workers_placeholder").empty();
 
@@ -228,6 +237,12 @@
 
         var html = Mustache.render(template, result);
         $("#workers_placeholder").append(html);
+
+        // Update total profit
+        $("#total_profit").empty();
+        template = $("#total_profit_template").html();
+        html = Mustache.render(template, totalprofit);
+        $("#total_profit").append(html);
       }});
     }
 
@@ -281,6 +296,7 @@
     		<input id="showdetail" type="checkbox" name="showdetail" value="yes" <?php if ($_COOKIE["showdetails"] == "yes") { echo 'checked'; } ?>/></label>
   		  <input type="submit" class="submit-button" value="Submit"/> <?php if (!empty($_GET["address"])) { ?><br /><center><span style="font-size:smaller;color:#FFF;">Refreshing in </span><span style="font-weight:bold;font-size:smaller;color:#FFF;" id="timer"></span><span style="font-size:smaller;color:#FFF;"> seconds </span></center><?php } ?>
   		</form> 
+      <div class="total_profit" id="total_profit"></div>
 	  	<div class="workers_placeholder" id="workers_placeholder">
   	  	<div class="generatestatuskey">Don't have a status key?  <a href="#" onclick="generateKey()">Generate a new one</a></div>
       </div>
