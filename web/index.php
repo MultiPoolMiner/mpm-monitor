@@ -7,11 +7,12 @@
   } ?>
 
   <title>MultiPoolMiner - Worker Monitor</title>
-  <link rel="stylesheet" type="text/css" href="style3.css"/>
-  <?php if (!empty($_GET["address"])) { ?><meta http-equiv="refresh" content="120"/>
-  <?php
-  $cookie = $_GET["address"];
-  setcookie("btcaddress", $cookie, strtotime('+30 days')); }
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <?php if(file_exists("custom.css")) { ?><link rel="stylesheet" type="text/css" href="custom.css"/><?php } ?>
+  <?php if (!empty($_GET["address"])) { ?><meta http-equiv="refresh" content="120"/><?php
+    $cookie = $_GET["address"];
+    setcookie("btcaddress", $cookie, strtotime('+30 days')); 
+  }
   if (!empty($_GET["showdetail"])) {
 	  $cookie2 = $_GET["showdetail"];
 	  setcookie("showdetails", $cookie2, strtotime('+30 days'));
