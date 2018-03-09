@@ -98,3 +98,14 @@ function ConvertToHashrate($value) {
   $value /= pow(1000, $pow);
   return round($value, 2) . ' ' . $units[$pow];
 }
+
+// Generate v4 UUID for unique user key
+function generate_key() {
+  return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0x0fff ) | 0x4000,
+        mt_rand( 0, 0x3fff ) | 0x8000,
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    );
+}
