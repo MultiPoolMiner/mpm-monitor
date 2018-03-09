@@ -8,13 +8,12 @@ if(empty($_GET['address'])) {
   $workers = get_workers_json($_GET['address']);
 
   if(empty(json_decode($workers, true))) { 
-    $statusurl = ( (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
-    if(dirname($_SERVER['PHP_SELF']) == "/") {
+    $statusurl = ( (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
+    if(substr($statusurl, -1) == '/') {
       $statusurl .= "miner.php";
     } else {
-      $statusurl .= dirname($_SERVER['PHP_SELF']) . '/miner.php';
+      $statusurl .= "/miner.php";
     }
-
     $workers = json_encode(array("error" => "<center><span style='color: #C00;'>Error: No workers found. Make sure your have set:<pre>-MinerStatusURL $statusurl
     -MinerStatusKey {$_GET['address']}</span></center>"));
   }
