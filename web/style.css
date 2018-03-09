@@ -1,43 +1,119 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	background: #343a40;
+}
+
+header.masthead>.overlay.short {
+  padding: 1rem 0;
+}
+
+header {
+  text-align: center;
+}
+
+.text-white {
+  color: #fff !important;
+}
+
 #addressform {
+  color: white;
   text-align: center;
 }
 
 #address {
-  width: 25em;
+  font-size: .85em;
+  padding: 4px;
+  width: 310px;
+  border: #999 3px solid;
+  border-radius: 10px;
+  margin-left: 2px;
+  margin-right: 1px;
+  text-align: center;
+}
+
+pre {
+  color:#fff;
+}
+
+div.generatestatuskey {
+  color: white;
+  text-align: center;
+  padding: 1em;
+}
+
+.submit-button {
+  background: #EEE;
+  border: 1;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  color: #000;
+  text-transform: uppercase; 
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+}
+
+.submit-button:hover {
+    background-color: #84cc84;
+    color: #000;
+}
+
+span.label {
+  font-weight: bold;
+  padding: 3px;
 }
 
 .worker h3 {
   text-align: center;
-  margin: 5px;
+  text-transform:uppercase;
+  margin: 3px;
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
 }
 
 table {
+  border: 1px solid #ccc;
   border-collapse: collapse;
+  margin: 0;
+  padding: 0;
   width: 100%;
+  table-layout: fixed;
+}
+table caption {
+  font-size: 1em;
+  margin: .3em 0 .45em;
+}
+table tr:nth-child(even) {
+  background: #ccc;
+  border: 1px solid #ddd;
+  padding: .25em;
+}
+table tr:nth-child(odd) { 
+  background: #f8f8f8; 
 }
 
-span.label {
-  font-weight: bold;
-  padding: 5px;
+table th,
+table td {
+  padding: .3em;
+  text-align: center;
+  border: 1px solid #ccc;
+  word-wrap: break-word;
 }
 
-div.activeminers td, .activeminers th {
-  border: 1px solid grey;
-  font-size: small;
+table td {
+  font-size: .75em;
 }
-
-th { text-align: left; }
-
-div.workers {
-  display: flex;
-  flex-wrap: wrap;
-  flex-basis: 0;
-  align-items: stretch;
-  justify-content: center;
+table th {
+  background-color: #444;
+  color: white;
+  font-size: .75em;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  width: auto;
 }
-
+	
 div.worker {
   justify-content: center;
   border: 2px solid black;
@@ -47,15 +123,21 @@ div.worker {
   border-radius: 10px;
 }
 
+div.workers {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 0;
+  align-items: stretch;
+  justify-content: center;
+}
+
+
 div.worker_Stopped {
   background-color: #ECADA2;
 }
-div.worker_Running {
-  background-color: #84cc84;
-}
 
-div.workerdetailed {
-  flex-basis: 900px;
+div.worker_Running {
+  background-color: #BDEAD0;
 }
 
 div.statuscontainer {
@@ -64,26 +146,100 @@ div.statuscontainer {
 }
 
 div.statuscontainer div {
+  font-size: .8em;
+  font-weight: bold;
   flex: 1;
   display: flex;
-  justify-content: flex-start;
   align-items: center;
 }
 
+div.workerstatus {
+  justify-content: flex-start;
+}
+div.lastseen {
+  justify-content: center;
+}
+div.btcday {
+  justify-content: flex-end;
+}
 div.statuscontainerbasic div {
   clear: both;
 }
+
 div.statuscontainerbasic div span.label {
-  width: 5em;
+  width: 6em;
   display: inline-block;
 }
 
-#showdetail {
-  height: 18px;
-  width: 18px;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  vertical-align: middle;
+@media only screen 
+and (min-device-width: 375px)
+and (max-device-width: 1024px)
+and (orientation : portrait) 
+{
+	
+table {
+    border: 0;
+}
+
+table caption {
+    font-size: 1.3em;
+}
+
+table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+table tr {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+}
+
+table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+}
+
+table td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+table td:last-child {
+    border-bottom: 1px solid #ddd;
+}
+
+div.statuscontainer {
+  height: 40px;
+}
+
+div.statuscontainer div {
+  font-size: .65em;
+  align-items: center;
+}
+
+
+div.workerstatus {
+  justify-content: flex-start;
+}
+div.lastseen {
+  justify-content: center;
+}
+div.btcday {
+  justify-content: flex-end;
+}
+div.statuscontainerbasic div {
+  clear: both;
+}
 }
