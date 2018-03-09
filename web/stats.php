@@ -15,7 +15,8 @@ if(empty($_GET['address'])) {
       $statusurl .= dirname($_SERVER['PHP_SELF']) . '/miner.php';
     }
 
-    $workers = json_encode(array("error" => "Error: No workers found. Make sure your miner status URL is set to: $statusurl"));
+    $workers = json_encode(array("error" => "<center><span style='color: #C00;'>Error: No workers found. Make sure your have set:<pre>-MinerStatusURL $statusurl
+    -MinerStatusKey {$_GET['address']}</span></center>"));
   }
 }
 
